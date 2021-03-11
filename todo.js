@@ -1,16 +1,6 @@
 const toDoList = document.querySelector("#toDoList");
 const form = document.querySelector("#submit");
 
-// let savedToDos = JSON.parse(localStorage.getItem("task"));
-// for (let i = 0; i < savedToDos.lentgh; i++) {
-// 	let newToDo = document.createElement("li");
-// 	let newRmBtn = document.createElement("button");
-// 	let newCheckBox = document.createElement("input");
-
-// 	newToDo.innerText = savedToDos[i].task;
-// 	newRmBtn;
-// }
-
 form.addEventListener("submit", function (e) {
 	e.preventDefault();
 
@@ -35,8 +25,6 @@ form.addEventListener("submit", function (e) {
 	newToDo.append(newRmBtn);
 
 	form.reset();
-
-	// localStorage.setItem("task", JSON.stringify(savedToDos));
 });
 
 toDoList.addEventListener("click", function (e) {
