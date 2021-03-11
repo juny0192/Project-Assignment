@@ -1,6 +1,14 @@
 const toDoList = document.querySelector("#toDoList");
 const form = document.querySelector("#submit");
 
+const savedToDos = JSON.parse(localStorage.getItem("todos")) || [];
+
+for (let i = 0; i < savedToDos.length; i++) {
+	let newToDo = document.createElement("li");
+	newToDo.innerText = savedToDos[i];
+	toDoList.appendChild(newToDo);
+}
+
 form.addEventListener("submit", function (e) {
 	e.preventDefault();
 
@@ -14,7 +22,7 @@ form.addEventListener("submit", function (e) {
 	newToDo.innerText = " " + newToDoValue + " ";
 
 	let newRmBtn = document.createElement("button");
-	newRmBtn.innerText = "X";
+	newRmBtn.innerHTML = "&#x2715";
 	newRmBtn.classList.add("remove");
 
 	let newCheckBox = document.createElement("input");
@@ -25,12 +33,21 @@ form.addEventListener("submit", function (e) {
 	newToDo.append(newRmBtn);
 
 	form.reset();
+
+	savedToDos.push(newToDo.innerText);
+	localStorage.setItem("todos", JSON.stringify(savedToDos));
 });
 
 toDoList.addEventListener("click", function (e) {
 	if (e.target.tagName === "BUTTON") {
 		e.target.parentElement.remove();
-	} else if (e.target.tagName === "INPUT") {
+		localStorage.removeItem(savedToDos);
+	}
+
+	if (e.target.tagName === "INPUT") {
 		e.target.parentElement.classList.toggle("completed");
+		localStorage.setItem("completed", true);
+	} else {
+		localStorage.setItem("completed", false);
 	}
 });
