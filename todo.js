@@ -1,53 +1,36 @@
 const toDoList = document.querySelector("#toDoList");
 const form = document.querySelector("#submit");
 
-const savedToDos = JSON.parse(localStorage.getItem("todos")) || [];
-
-for (let i = 0; i < savedToDos.length; i++) {
-	let newToDo = document.createElement("li");
-	newToDo.innerText = savedToDos[i];
-	toDoList.appendChild(newToDo);
-}
+const savedTodos = JSON.parse(localStorage.getItem("todos")) || [];
 
 form.addEventListener("submit", function (e) {
 	e.preventDefault();
 
-	if (document.getElementById("addToDo").value.length === 0) {
-		alert("You need to write To Do");
-		return;
-	}
-
 	let newToDo = document.createElement("li");
-	let newToDoValue = document.getElementById("addToDo").value;
-	newToDo.innerText = " " + newToDoValue + " ";
-
-	let newRmBtn = document.createElement("button");
-	newRmBtn.innerHTML = "&#x2715";
-	newRmBtn.classList.add("remove");
-
-	let newCheckBox = document.createElement("input");
-	newCheckBox.setAttribute("type", "checkbox");
-
 	toDoList.appendChild(newToDo);
-	newToDo.prepend(newCheckBox);
-	newToDo.append(newRmBtn);
+
+	let newToDoValue = document.getElementById("addToDo").value;
+	newToDo.innerText = newToDoValue;
+
+	// let newCheckBox = document.createElement("input");
+	// newCheckBox.setAttribute("type", "checkbox");
+	// newToDo.appendChild(newCheckBox);
 
 	form.reset();
 
-	savedToDos.push(newToDo.innerText);
-	localStorage.setItem("todos", JSON.stringify(savedToDos));
+	savedTodos.push({ task: newToDoValue });
+	localStorage.setItem("todos", JSON.stringify(savedTodos));
 });
 
-toDoList.addEventListener("click", function (e) {
-	if (e.target.tagName === "BUTTON") {
-		e.target.parentElement.remove();
-		localStorage.removeItem(savedToDos);
-	}
+// toDoList.addEventListener("click", function (e) {
+// 	let clickItem = e.target;
 
-	if (e.target.tagName === "INPUT") {
-		e.target.parentElement.classList.toggle("completed");
-		localStorage.setItem("completed", true);
-	} else {
-		localStorage.setItem("completed", false);
-	}
-});
+// 	if (clickItem.tagName === "INPUT") {
+// 		e.target.parentElement.classList.add("completed");
+// 		clickItem.completed = true;
+// 	}
+//     if ( )
+//     {
+// 		clickItem.completed = false;
+// 	}
+// });
