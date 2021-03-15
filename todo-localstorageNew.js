@@ -4,14 +4,16 @@ const form = document.querySelector("#submit");
 const savedTodos = JSON.parse(localStorage.getItem("toDoList")) || [];
 
 for (let i = 0; i < savedTodos.length; i++) {
-	let newToDo = document.createElement("li");
-	newToDo.interText = savedTodos[i].task;
-	newToDo.completed = savedTodos[i].completed ? true : false;
-	if (newToDo.completed) {
-		newToDo.style.textDecoration = "line-through";
+	let newTodo = document.createElement("li");
+	newTodo.innerText = savedTodos[i].task;
+	newTodo.isCompleted = savedTodos[i].isCompleted ? true : false;
+	if (newTodo.isCompleted) {
+		newTodo.style.color = "gray";
+		newTodo.style.textDecoration = "line-through";
 	}
-	toDoList.appendChild(newToDo);
+	toDoList.appendChild(newTodo);
 }
+
 form.addEventListener("submit", function (e) {
 	e.preventDefault();
 
@@ -36,11 +38,18 @@ form.addEventListener("submit", function (e) {
 toDoList.addEventListener("click", function (e) {
 	if (!e.target.completed) {
 		e.target.style.textDecoration = "line-through";
-		e.target.style.color = "gray";
 		e.target.completed = true;
 	} else {
-		e.target.style.textDecoration = "none";
-		e.target.style.color = "black";
+		e.target.style.textDecoration = "";
 		e.target.completed = false;
+	}
+
+	for (let i = 0; i < savedTodos.length; i++) {
+		if (savedTodos[i].task === e.target.innerText) {
+			savedTodos[i].completed = true;
+		} else {
+			savedTodos[i].completed = false;
+		}
+		localStorage.setItem("toDoList", JSON.stringify(savedTodos));
 	}
 });
