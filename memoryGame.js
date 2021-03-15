@@ -3,6 +3,13 @@ let card1 = null;
 let card2 = null;
 let cardFlipped = 0;
 let returnPoint = false;
+let currentScore = 0;
+let lowScore = localStorage.getItem("low-score");
+
+document.getElementById("restart").onclick = function () {
+	location.href =
+		"http://127.0.0.1:5501/SpringBoardCareerTrak/memory-game/index.html";
+};
 
 const COLORS = [
 	"red",
@@ -84,14 +91,17 @@ function handleCardClick(e) {
 		let card2ClassName = card2.className;
 
 		if (card1ClassName === card2ClassName) {
+			setScore(currentScore + 2);
 			cardFlipped += 2;
 			card1.removeEventListener("click", handleCardClick);
 			card2.removeEventListener("click", handleCardClick);
 			card1 = null;
 			card2 = null;
 			returnPoint = false;
+			console.log(currentScore);
 		} else {
 			setTimeout(function () {
+				setScore(currentScore - 1);
 				card1.style.backgroundColor = "";
 				card2.style.backgroundColor = "";
 				card1.classList.remove("flipped");
@@ -99,13 +109,28 @@ function handleCardClick(e) {
 				card1 = null;
 				card2 = null;
 				returnPoint = false;
+				console.log(currentScore);
 			}, 700);
 		}
 	}
+
 	if (cardFlipped === COLORS.length) {
+		endGame();
 		console.log("Game Over");
 	}
 }
 
+function setScore(newScore) {
+	currentScore = newScore;
+	document.getElementById("currentScore").innerText = currentScore;
+}
+
+function endGame() {
+	let lowScore = localStorage.getItem("low-score");
+
+	if (currentScore < lowScore) {
+		localStorage.setItem("low-score", currentScore);
+	}
+}
 // when the DOM loads
 createDivsForColors(shuffledColors);
